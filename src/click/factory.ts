@@ -1,5 +1,5 @@
 const defaultEventInit: EventInit = {
-  cancelable: false,
+  cancelable: true,
   bubbles: true,
 };
 
