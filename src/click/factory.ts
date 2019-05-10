@@ -1,11 +1,11 @@
 const defaultEventInit: EventInit = {
-  cancelable: true,
+  cancelable: false,
   bubbles: true,
-}
+};
 
 export default(type: string, mouseEventInit: MouseEventInit = {}) => {
   return new MouseEvent(type, {
     ...defaultEventInit,
     ...mouseEventInit,
   });
-}
+};
