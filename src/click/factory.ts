@@ -3,7 +3,7 @@ const defaultEventInit: EventInit = {
   bubbles: true,
 };
 
-export default(type: string, mouseEventInit: MouseEventInit = {}) => {
+export default(type: string, mouseEventInit: MouseEventInit & { cancelable: boolean }) => {
   return new MouseEvent(type, {
     ...defaultEventInit,
     ...mouseEventInit,

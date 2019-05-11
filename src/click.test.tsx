@@ -41,18 +41,21 @@ describe('click', () => {
       expect(event.type).toBe('mousedown');
       expect(event.currentTarget).toBe(divElement);
       expect(event.target).toBe(spanElement);
+      expect(event.cancelable).toBe(true);
     }).and.callThrough();
 
     const mouseupSpy = jasmine.createSpy('mouseUpSpy', (event: MouseEvent) => {
       expect(event.type).toBe('mouseup');
       expect(event.currentTarget).toBe(divElement);
       expect(event.target).toBe(spanElement);
+      expect(event.cancelable).toBe(true);
     }).and.callThrough();
 
     const clickSpy = jasmine.createSpy('clickSpy', (event: MouseEvent) => {
       expect(event.type).toBe('click');
       expect(event.currentTarget).toBe(divElement);
       expect(event.target).toBe(spanElement);
+      expect(event.cancelable).toBe(true);
     }).and.callThrough();
 
     const inputSpy = jasmine.createSpy('inputSpy');
@@ -83,6 +86,7 @@ describe('click', () => {
       expect(event.currentTarget).toBe(divElement);
       expect(event.target).toBe(checkboxElement);
       expect((event.target as HTMLInputElement).checked).toBe(false);
+      expect(event.cancelable).toBe(true);
     }).and.callThrough();
 
     const mouseupSpy = jasmine.createSpy('mouseUpSpy', (event: MouseEvent) => {
@@ -90,6 +94,7 @@ describe('click', () => {
       expect(event.currentTarget).toBe(divElement);
       expect(event.target).toBe(checkboxElement);
       expect((event.target as HTMLInputElement).checked).toBe(false);
+      expect(event.cancelable).toBe(true);
     }).and.callThrough();
 
     const clickSpy = jasmine.createSpy('clickSpy', (event: MouseEvent) => {
@@ -97,6 +102,7 @@ describe('click', () => {
       expect(event.currentTarget).toBe(divElement);
       expect(event.target).toBe(checkboxElement);
       expect((event.target as HTMLInputElement).checked).toBe(true);
+      expect(event.cancelable).toBe(true);
     }).and.callThrough();
 
     const inputSpy = jasmine.createSpy('inputSpy', (event: MouseEvent) => {
@@ -104,6 +110,7 @@ describe('click', () => {
       expect(event.currentTarget).toBe(divElement);
       expect(event.target).toBe(checkboxElement);
       expect((event.target as HTMLInputElement).checked).toBe(true);
+      expect(event.cancelable).toBe(false);
     }).and.callThrough();
 
     const changeSpy = jasmine.createSpy('changeSpy', (event: MouseEvent) => {
@@ -111,6 +118,7 @@ describe('click', () => {
       expect(event.currentTarget).toBe(divElement);
       expect(event.target).toBe(checkboxElement);
       expect((event.target as HTMLInputElement).checked).toBe(true);
+      expect(event.cancelable).toBe(false);
     }).and.callThrough();
 
     const checkboxElement = <input type="checkbox" /> as HTMLInputElement;
@@ -138,6 +146,7 @@ describe('click', () => {
       expect(event.currentTarget).toBe(divElement);
       expect(event.target).toBe(checkboxElement);
       expect((event.target as HTMLInputElement).checked).toBe(false);
+      expect(event.cancelable).toBe(true);
     }).and.callThrough();
 
     const mouseupSpy = jasmine.createSpy('mouseUpSpy', (event: MouseEvent) => {
@@ -145,6 +154,7 @@ describe('click', () => {
       expect(event.currentTarget).toBe(divElement);
       expect(event.target).toBe(checkboxElement);
       expect((event.target as HTMLInputElement).checked).toBe(false);
+      expect(event.cancelable).toBe(true);
     }).and.callThrough();
 
     const clickSpy = jasmine.createSpy('clickSpy', (event: MouseEvent) => {
@@ -152,6 +162,7 @@ describe('click', () => {
       expect(event.currentTarget).toBe(divElement);
       expect(event.target).toBe(checkboxElement);
       expect((event.target as HTMLInputElement).checked).toBe(true);
+      expect(event.cancelable).toBe(true);
       event.preventDefault();
     }).and.callThrough();
 
