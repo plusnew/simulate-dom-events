@@ -2,7 +2,8 @@
   "name": "@plusnew/simulate-dom-events",
   "version": "0.1.0",
   "description": "Simulates browser behaviour of dom event groups",
-  "main": "dist/index.js",
+  "main": "dist/app.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "prepublishOnly": "yarn run test && yarn run build",
     "start": "webpack-dev-server --config config/webpack.dev.conf.js",

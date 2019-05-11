@@ -12,6 +12,6 @@ To have an abstraction layer for testing applications with dom events.
   const checkboxElement = <input type="checkbox" onclick={() => console.log('click fired')} onchange={() => console.log('change fired!')}/> as HTMLInputElement;
 
   click(checkboxElement);
-  // The mousedown, mouseup, click, input and change event will fire synchronously with the correct values
+  // The mousedown, mouseup, click, input and change event will dispatch synchronously with the correct values
   // In case in the click event a prevendDefault() is called, the input and change event will not occur
 ```
