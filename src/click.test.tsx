@@ -64,7 +64,7 @@ describe('click', () => {
     const inputSpy = jasmine.createSpy('inputSpy');
     const changeSpy = jasmine.createSpy('changeSpy');
 
-    const spanElement = <span  />;
+    const spanElement = <span />;
     const divElement: HTMLElement =
       <div
         onclick={clickSpy}
@@ -83,120 +83,266 @@ describe('click', () => {
     expect(changeSpy).not.toHaveBeenCalled();
   });
 
-  it('trigger oninput and onchange on checkbox', () => {
-    const mousedownSpy = jasmine.createSpy('mousedownSpy', (event: MouseEvent) => {
-      expect(event instanceof MouseEvent).toBe(true);
-      expect(event.type).toBe('mousedown');
-      expect(event.currentTarget).toBe(divElement);
-      expect(event.target).toBe(checkboxElement);
-      expect((event.target as HTMLInputElement).checked).toBe(false);
-      expect(event.cancelable).toBe(true);
-    }).and.callThrough();
+  describe('checkbox', () => {
 
-    const mouseupSpy = jasmine.createSpy('mouseUpSpy', (event: MouseEvent) => {
-      expect(event instanceof MouseEvent).toBe(true);
-      expect(event.type).toBe('mouseup');
-      expect(event.currentTarget).toBe(divElement);
-      expect(event.target).toBe(checkboxElement);
-      expect((event.target as HTMLInputElement).checked).toBe(false);
-      expect(event.cancelable).toBe(true);
-    }).and.callThrough();
+    it('trigger oninput and onchange on checkbox', () => {
+      const mousedownSpy = jasmine.createSpy('mousedownSpy', (event: MouseEvent) => {
+        expect(event instanceof MouseEvent).toBe(true);
+        expect(event.type).toBe('mousedown');
+        expect(event.currentTarget).toBe(divElement);
+        expect(event.target).toBe(checkboxElement);
+        expect((event.target as HTMLInputElement).checked).toBe(false);
+        expect(event.cancelable).toBe(true);
+      }).and.callThrough();
 
-    const clickSpy = jasmine.createSpy('clickSpy', (event: MouseEvent) => {
-      expect(event instanceof MouseEvent).toBe(true);
-      expect(event.type).toBe('click');
-      expect(event.currentTarget).toBe(divElement);
-      expect(event.target).toBe(checkboxElement);
-      expect((event.target as HTMLInputElement).checked).toBe(true);
-      expect(event.cancelable).toBe(true);
-    }).and.callThrough();
+      const mouseupSpy = jasmine.createSpy('mouseUpSpy', (event: MouseEvent) => {
+        expect(event instanceof MouseEvent).toBe(true);
+        expect(event.type).toBe('mouseup');
+        expect(event.currentTarget).toBe(divElement);
+        expect(event.target).toBe(checkboxElement);
+        expect((event.target as HTMLInputElement).checked).toBe(false);
+        expect(event.cancelable).toBe(true);
+      }).and.callThrough();
 
-    const inputSpy = jasmine.createSpy('inputSpy', (event: Event) => {
-      expect(event instanceof Event).toBe(true);
-      expect(event.type).toBe('input');
-      expect(event.currentTarget).toBe(divElement);
-      expect(event.target).toBe(checkboxElement);
-      expect((event.target as HTMLInputElement).checked).toBe(true);
-      expect(event.cancelable).toBe(false);
-    }).and.callThrough();
+      const clickSpy = jasmine.createSpy('clickSpy', (event: MouseEvent) => {
+        expect(event instanceof MouseEvent).toBe(true);
+        expect(event.type).toBe('click');
+        expect(event.currentTarget).toBe(divElement);
+        expect(event.target).toBe(checkboxElement);
+        expect((event.target as HTMLInputElement).checked).toBe(true);
+        expect(event.cancelable).toBe(true);
+      }).and.callThrough();
 
-    const changeSpy = jasmine.createSpy('changeSpy', (event: Event) => {
-      expect(event instanceof Event).toBe(true);
-      expect(event.type).toBe('change');
-      expect(event.currentTarget).toBe(divElement);
-      expect(event.target).toBe(checkboxElement);
-      expect((event.target as HTMLInputElement).checked).toBe(true);
-      expect(event.cancelable).toBe(false);
-    }).and.callThrough();
+      const inputSpy = jasmine.createSpy('inputSpy', (event: Event) => {
+        expect(event instanceof Event).toBe(true);
+        expect(event.type).toBe('input');
+        expect(event.currentTarget).toBe(divElement);
+        expect(event.target).toBe(checkboxElement);
+        expect((event.target as HTMLInputElement).checked).toBe(true);
+        expect(event.cancelable).toBe(false);
+      }).and.callThrough();
 
-    const checkboxElement = <input type="checkbox" /> as HTMLInputElement;
-    const divElement: HTMLElement =
-      <div
-        onclick={clickSpy}
-        onmousedown={mousedownSpy}
-        onmouseup={mouseupSpy}
-        onchange={changeSpy}
-        oninput={inputSpy}
-      >{checkboxElement}</div>;
+      const changeSpy = jasmine.createSpy('changeSpy', (event: Event) => {
+        expect(event instanceof Event).toBe(true);
+        expect(event.type).toBe('change');
+        expect(event.currentTarget).toBe(divElement);
+        expect(event.target).toBe(checkboxElement);
+        expect((event.target as HTMLInputElement).checked).toBe(true);
+        expect(event.cancelable).toBe(false);
+      }).and.callThrough();
 
-    click(checkboxElement);
+      const checkboxElement = <input type="checkbox" /> as HTMLInputElement;
+      const divElement: HTMLElement =
+        <div
+          onclick={clickSpy}
+          onmousedown={mousedownSpy}
+          onmouseup={mouseupSpy}
+          onchange={changeSpy}
+          oninput={inputSpy}
+        >{checkboxElement}</div>;
 
-    expect(checkboxElement.checked).toBe(true);
-    expect(mousedownSpy).toHaveBeenCalledBefore(mouseupSpy);
-    expect(mouseupSpy).toHaveBeenCalledBefore(clickSpy);
-    expect(clickSpy).toHaveBeenCalledBefore(inputSpy);
-    expect(inputSpy).toHaveBeenCalledBefore(changeSpy);
+      click(checkboxElement);
+
+      expect(checkboxElement.checked).toBe(true);
+      expect(mousedownSpy).toHaveBeenCalledBefore(mouseupSpy);
+      expect(mouseupSpy).toHaveBeenCalledBefore(clickSpy);
+      expect(clickSpy).toHaveBeenCalledBefore(inputSpy);
+      expect(inputSpy).toHaveBeenCalledBefore(changeSpy);
+    });
+
+    it('oninput and onchange are not called, when onclick makes preventdefault', () => {
+      const mousedownSpy = jasmine.createSpy('mousedownSpy', (event: MouseEvent) => {
+        expect(event instanceof MouseEvent).toBe(true);
+        expect(event.type).toBe('mousedown');
+        expect(event.currentTarget).toBe(divElement);
+        expect(event.target).toBe(checkboxElement);
+        expect((event.target as HTMLInputElement).checked).toBe(false);
+        expect(event.cancelable).toBe(true);
+      }).and.callThrough();
+
+      const mouseupSpy = jasmine.createSpy('mouseUpSpy', (event: MouseEvent) => {
+        expect(event instanceof MouseEvent).toBe(true);
+        expect(event.type).toBe('mouseup');
+        expect(event.currentTarget).toBe(divElement);
+        expect(event.target).toBe(checkboxElement);
+        expect((event.target as HTMLInputElement).checked).toBe(false);
+        expect(event.cancelable).toBe(true);
+      }).and.callThrough();
+
+      const clickSpy = jasmine.createSpy('clickSpy', (event: MouseEvent) => {
+        expect(event instanceof MouseEvent).toBe(true);
+        expect(event.type).toBe('click');
+        expect(event.currentTarget).toBe(divElement);
+        expect(event.target).toBe(checkboxElement);
+        expect((event.target as HTMLInputElement).checked).toBe(true);
+        expect(event.cancelable).toBe(true);
+        event.preventDefault();
+      }).and.callThrough();
+
+      const inputSpy = jasmine.createSpy('inputSpy');
+      const changeSpy = jasmine.createSpy('changeSpy');
+
+      const checkboxElement = <input type="checkbox" /> as HTMLInputElement;
+      const divElement: HTMLElement =
+        <div
+          onclick={clickSpy}
+          onmousedown={mousedownSpy}
+          onmouseup={mouseupSpy}
+          onchange={changeSpy}
+          oninput={inputSpy}
+        >{checkboxElement}</div>;
+
+      click(checkboxElement);
+
+      expect(checkboxElement.checked).toBe(false);
+      expect(mousedownSpy).toHaveBeenCalledBefore(mouseupSpy);
+      expect(mouseupSpy).toHaveBeenCalledBefore(clickSpy);
+
+      expect(inputSpy).not.toHaveBeenCalled();
+      expect(changeSpy).not.toHaveBeenCalled();
+    });
   });
 
-  it('oninput and onchange are not called, when onclick makes preventdefault', () => {
-    const mousedownSpy = jasmine.createSpy('mousedownSpy', (event: MouseEvent) => {
-      expect(event instanceof MouseEvent).toBe(true);
-      expect(event.type).toBe('mousedown');
-      expect(event.currentTarget).toBe(divElement);
-      expect(event.target).toBe(checkboxElement);
-      expect((event.target as HTMLInputElement).checked).toBe(false);
-      expect(event.cancelable).toBe(true);
-    }).and.callThrough();
+  describe('submit', () => {
+    it('without form', () => {
+      const mousedownSpy = jasmine.createSpy('mousedownSpy', (event: MouseEvent) => {
+        expect(event instanceof MouseEvent).toBe(true);
+        expect(event.type).toBe('mousedown');
+        expect(event.currentTarget).toBe(submitElement);
+        expect(event.target).toBe(submitElement);
+        expect(event.cancelable).toBe(true);
+      }).and.callThrough();
 
-    const mouseupSpy = jasmine.createSpy('mouseUpSpy', (event: MouseEvent) => {
-      expect(event instanceof MouseEvent).toBe(true);
-      expect(event.type).toBe('mouseup');
-      expect(event.currentTarget).toBe(divElement);
-      expect(event.target).toBe(checkboxElement);
-      expect((event.target as HTMLInputElement).checked).toBe(false);
-      expect(event.cancelable).toBe(true);
-    }).and.callThrough();
+      const mouseupSpy = jasmine.createSpy('mouseUpSpy', (event: MouseEvent) => {
+        expect(event instanceof MouseEvent).toBe(true);
+        expect(event.type).toBe('mouseup');
+        expect(event.currentTarget).toBe(submitElement);
+        expect(event.target).toBe(submitElement);
+        expect(event.cancelable).toBe(true);
+      }).and.callThrough();
 
-    const clickSpy = jasmine.createSpy('clickSpy', (event: MouseEvent) => {
-      expect(event instanceof MouseEvent).toBe(true);
-      expect(event.type).toBe('click');
-      expect(event.currentTarget).toBe(divElement);
-      expect(event.target).toBe(checkboxElement);
-      expect((event.target as HTMLInputElement).checked).toBe(true);
-      expect(event.cancelable).toBe(true);
-      event.preventDefault();
-    }).and.callThrough();
+      const clickSpy = jasmine.createSpy('clickSpy', (event: MouseEvent) => {
+        expect(event instanceof MouseEvent).toBe(true);
+        expect(event.type).toBe('click');
+        expect(event.currentTarget).toBe(submitElement);
+        expect(event.target).toBe(submitElement);
+        expect(event.cancelable).toBe(true);
+      }).and.callThrough();
 
-    const inputSpy = jasmine.createSpy('inputSpy');
-    const changeSpy = jasmine.createSpy('changeSpy');
+      const submitSpy = jasmine.createSpy('submitSpy');
 
-    const checkboxElement = <input type="checkbox" /> as HTMLInputElement;
-    const divElement: HTMLElement =
-      <div
+      const submitElement = <input type="submit"
         onclick={clickSpy}
         onmousedown={mousedownSpy}
         onmouseup={mouseupSpy}
-        onchange={changeSpy}
-        oninput={inputSpy}
-      >{checkboxElement}</div>;
+        onsubmit={submitSpy}
+      />;
 
-    click(checkboxElement);
+      click(submitElement);
 
-    expect(checkboxElement.checked).toBe(false);
-    expect(mousedownSpy).toHaveBeenCalledBefore(mouseupSpy);
-    expect(mouseupSpy).toHaveBeenCalledBefore(clickSpy);
+      expect(mousedownSpy).toHaveBeenCalledBefore(mouseupSpy);
+      expect(mouseupSpy).toHaveBeenCalledBefore(clickSpy);
+      expect(submitSpy).not.toHaveBeenCalled();
+    });
 
-    expect(inputSpy).not.toHaveBeenCalled();
-    expect(changeSpy).not.toHaveBeenCalled();
+    it('with form', () => {
+      const mousedownSpy = jasmine.createSpy('mousedownSpy', (event: MouseEvent) => {
+        expect(event instanceof MouseEvent).toBe(true);
+        expect(event.type).toBe('mousedown');
+        expect(event.currentTarget).toBe(submitElement);
+        expect(event.target).toBe(submitElement);
+        expect(event.cancelable).toBe(true);
+      }).and.callThrough();
+
+      const mouseupSpy = jasmine.createSpy('mouseUpSpy', (event: MouseEvent) => {
+        expect(event instanceof MouseEvent).toBe(true);
+        expect(event.type).toBe('mouseup');
+        expect(event.currentTarget).toBe(submitElement);
+        expect(event.target).toBe(submitElement);
+        expect(event.cancelable).toBe(true);
+      }).and.callThrough();
+
+      const clickSpy = jasmine.createSpy('clickSpy', (event: MouseEvent) => {
+        expect(event instanceof MouseEvent).toBe(true);
+        expect(event.type).toBe('click');
+        expect(event.currentTarget).toBe(submitElement);
+        expect(event.target).toBe(submitElement);
+        expect(event.cancelable).toBe(true);
+      }).and.callThrough();
+
+      const submitOnFormSpy = jasmine.createSpy('submitOnFormSpy', (event: Event) => {
+        expect(event instanceof Event).toBe(true);
+        expect(event.type).toBe('submit');
+        expect(event.currentTarget).toBe(formElement);
+        expect(event.target).toBe(formElement);
+        expect(event.cancelable).toBe(true);
+      }).and.callThrough();
+
+      const submitSpy = jasmine.createSpy('submitSpy');
+
+      const submitElement = <input type="submit"
+        onclick={clickSpy}
+        onmousedown={mousedownSpy}
+        onmouseup={mouseupSpy}
+        onsubmit={submitSpy}
+      />;
+
+      const formElement = <form onsubmit={submitOnFormSpy}>{submitElement}</form>;
+      click(submitElement);
+
+      expect(mousedownSpy).toHaveBeenCalledBefore(mouseupSpy);
+      expect(mouseupSpy).toHaveBeenCalledBefore(clickSpy);
+      expect(clickSpy).toHaveBeenCalledBefore(submitOnFormSpy);
+
+      expect(submitSpy).not.toHaveBeenCalled();
+    });
+
+    it('with form', () => {
+      const mousedownSpy = jasmine.createSpy('mousedownSpy', (event: MouseEvent) => {
+        expect(event instanceof MouseEvent).toBe(true);
+        expect(event.type).toBe('mousedown');
+        expect(event.currentTarget).toBe(submitElement);
+        expect(event.target).toBe(submitElement);
+        expect(event.cancelable).toBe(true);
+      }).and.callThrough();
+
+      const mouseupSpy = jasmine.createSpy('mouseUpSpy', (event: MouseEvent) => {
+        expect(event instanceof MouseEvent).toBe(true);
+        expect(event.type).toBe('mouseup');
+        expect(event.currentTarget).toBe(submitElement);
+        expect(event.target).toBe(submitElement);
+        expect(event.cancelable).toBe(true);
+      }).and.callThrough();
+
+      const clickSpy = jasmine.createSpy('clickSpy', (event: MouseEvent) => {
+        expect(event instanceof MouseEvent).toBe(true);
+        expect(event.type).toBe('click');
+        expect(event.currentTarget).toBe(submitElement);
+        expect(event.target).toBe(submitElement);
+        expect(event.cancelable).toBe(true);
+        event.preventDefault();
+      }).and.callThrough();
+
+      const submitOnFormSpy = jasmine.createSpy('submitOnFormSpy');
+
+      const submitSpy = jasmine.createSpy('submitSpy');
+
+      const submitElement = <input type="submit"
+        onclick={clickSpy}
+        onmousedown={mousedownSpy}
+        onmouseup={mouseupSpy}
+        onsubmit={submitSpy}
+      />;
+
+      <form onsubmit={submitOnFormSpy}>{submitElement}</form>;
+
+      click(submitElement);
+
+      expect(mousedownSpy).toHaveBeenCalledBefore(mouseupSpy);
+      expect(mouseupSpy).toHaveBeenCalledBefore(clickSpy);
+
+      expect(submitOnFormSpy).not.toHaveBeenCalled();
+      expect(submitSpy).not.toHaveBeenCalled();
+    });
   });
 });
