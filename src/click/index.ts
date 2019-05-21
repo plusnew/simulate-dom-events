@@ -7,6 +7,9 @@ function getCorrespondingElement(target: HTMLLabelElement): HTMLElement | null {
 }
 
 export default (target: HTMLElement) => {
+  /**
+   * general behaviour at a click
+   */
   target.dispatchEvent(createMouseEvent('mousedown', { cancelable: true }));
   target.dispatchEvent(createMouseEvent('mouseup', { cancelable: true }));
 
@@ -19,6 +22,9 @@ export default (target: HTMLElement) => {
     }
   }
 
+  /**
+   * checkbox logic
+   */
   if (isCheckbox(inputElement)) {
     const previousValue = inputElement.checked;
 
@@ -37,6 +43,10 @@ export default (target: HTMLElement) => {
       inputElement.dispatchEvent(createEvent('input', { cancelable: false }));
       inputElement.dispatchEvent(createEvent('change', { cancelable: false }));
     }
+
+  /**
+   * submit button behaviour
+   */
   } else if (target instanceof HTMLInputElement && target.type === 'submit') {
     const clickEvent = createMouseEvent('click', { cancelable: true });
 
@@ -45,6 +55,9 @@ export default (target: HTMLElement) => {
     if (clickEvent.defaultPrevented === false && target.form) {
       target.form.dispatchEvent(createEvent('submit', { cancelable: true }));
     }
+  /**
+   * default behaviour
+   */
   } else {
     target.dispatchEvent(createMouseEvent('click', { cancelable: true }));
   }
