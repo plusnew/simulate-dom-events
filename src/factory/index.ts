@@ -5,18 +5,25 @@ const defaultEventInit: EventInit = {
 
 type base = {
   cancelable: boolean,
-}
+};
 
-export const createMouseEvent = (type: string, mouseEventInit: MouseEventInit & base) => {
+export const createMouseEvent = (type: string, keyboardEventInit: KeyboardEventInit & base) => {
+  return new MouseEvent(type, {
+    ...defaultEventInit,
+    ...keyboardEventInit,
+  });
+};
+
+export const createKeyboardEvent = (type: string, mouseEventInit: MouseEventInit & base) => {
   return new MouseEvent(type, {
     ...defaultEventInit,
     ...mouseEventInit,
   });
 };
 
-export const createEvent = (type: string, mouseEventInit: EventInit & base) => {
+export const createEvent = (type: string, eventInit: EventInit & base) => {
   return new Event(type, {
     ...defaultEventInit,
-    ...mouseEventInit,
+    ...eventInit,
   });
 };
