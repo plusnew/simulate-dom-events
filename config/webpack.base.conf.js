@@ -9,7 +9,9 @@ module.exports = {
   mode: 'development',
   output: {
       path: __dirname + '/../dist',
-      filename: 'app.js'
+      filename: 'app.js',
+      library: 'plusnewSimulateDomEvents',
+      libraryTarget: "umd",
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],

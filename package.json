@@ -1,6 +1,6 @@
 {
   "name": "@plusnew/simulate-dom-events",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Simulates browser behaviour of dom event groups",
   "main": "dist/app.js",
   "types": "dist/index.d.ts",
