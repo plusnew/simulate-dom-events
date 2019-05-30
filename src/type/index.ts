@@ -21,19 +21,21 @@ function addChar(target: HTMLInputElement, character: string) {
     if (defaultPrevented === false) {
       target.value += character;
 
-      const inputEvent = createKeyboardEvent('input', { cancelable: true });
+      const inputEvent = createKeyboardEvent('input', { cancelable: false });
       target.dispatchEvent(inputEvent);
     }
   }
 
-  const keyUpEvent = createKeyboardEvent('keyup', { cancelable: true });
+  const keyUpEvent = createKeyboardEvent('keyup', { cancelable: false });
   target.dispatchEvent(keyUpEvent);
 }
 
 export default (opt: opt) => {
   if (isTextInput(opt.target)) {
-    for (let i = 0; i < opt.value.length; i += 1) {
-      addChar(opt.target, opt.value[i]);
+    if (opt.target.disabled === false) {
+      for (let i = 0; i < opt.value.length; i += 1) {
+        addChar(opt.target, opt.value[i]);
+      }
     }
   }
 };

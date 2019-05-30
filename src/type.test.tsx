@@ -28,7 +28,7 @@ describe('type', () => {
         expect(event.currentTarget).toBe(containerElement);
         expect((event.target as HTMLInputElement).value).toBe('f');
         expect(event.target).toBe(inputElement);
-        expect(event.cancelable).toBe(true); // @TODO correct?
+        expect(event.cancelable).toBe(false);
       }).and.callThrough();
 
       const onkeyupSpy = jasmine.createSpy('onkeyupSpy', (event: MouseEvent) => {
@@ -37,7 +37,7 @@ describe('type', () => {
         expect(event.currentTarget).toBe(containerElement);
         expect((event.target as HTMLInputElement).value).toBe('f');
         expect(event.target).toBe(inputElement);
-        expect(event.cancelable).toBe(true); // @TODO correct?
+        expect(event.cancelable).toBe(false);
       }).and.callThrough();
 
       const inputElement = <input type="text" />;
@@ -88,7 +88,7 @@ describe('type', () => {
         expect(event.currentTarget).toBe(containerElement);
         expect((event.target as HTMLInputElement).value).toBe('');
         expect(event.target).toBe(inputElement);
-        expect(event.cancelable).toBe(true); // @TODO correct?
+        expect(event.cancelable).toBe(false);
       }).and.callThrough();
 
       const inputElement = <input type="text" />;
@@ -134,7 +134,7 @@ describe('type', () => {
         expect(event.currentTarget).toBe(containerElement);
         expect((event.target as HTMLInputElement).value).toBe('');
         expect(event.target).toBe(inputElement);
-        expect(event.cancelable).toBe(true); // @TODO correct?
+        expect(event.cancelable).toBe(false);
       }).and.callThrough();
 
       const inputElement = <input type="text" />;
@@ -154,6 +154,32 @@ describe('type', () => {
       expect(onkeydownSpy).toHaveBeenCalledBefore(onkeyupSpy);
       expect(onkeypressSpy).not.toHaveBeenCalled();
       expect(oninputSpy).not.toHaveBeenCalled();
+    });
+
+    it('disabled prevents any events', () => {
+      const onkeydownSpy = jasmine.createSpy('onkeydownSpy', (event: MouseEvent) => {});
+      const onkeypressSpy = jasmine.createSpy('onkeypressSpy', (event: MouseEvent) => {});
+      const oninputSpy = jasmine.createSpy('oninputSpy', (event: MouseEvent) => {});
+      const onkeyupSpy = jasmine.createSpy('oninpkeyup', (event: MouseEvent) => {});
+
+      const inputElement = <input type="text" disabled={true} />;
+
+      <div
+        onkeydown={onkeydownSpy}
+        onkeypress={onkeypressSpy}
+        oninput={oninputSpy}
+        onkeyup={onkeyupSpy}
+      >{inputElement}</div>;
+
+      type({
+        target: inputElement,
+        value: 'f',
+      });
+
+      expect(onkeydownSpy).not.toHaveBeenCalled();
+      expect(onkeypressSpy).not.toHaveBeenCalled();
+      expect(oninputSpy).not.toHaveBeenCalled();
+      expect(onkeyupSpy).not.toHaveBeenCalled();
     });
   });
 });
