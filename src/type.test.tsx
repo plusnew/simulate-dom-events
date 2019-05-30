@@ -109,7 +109,6 @@ describe('type', () => {
       expect(onkeypressSpy).toHaveBeenCalledBefore(onkeyupSpy);
 
       expect(oninputSpy).not.toHaveBeenCalled();
-
     });
 
     it('keydown prevents', () => {
@@ -180,6 +179,56 @@ describe('type', () => {
       expect(onkeypressSpy).not.toHaveBeenCalled();
       expect(oninputSpy).not.toHaveBeenCalled();
       expect(onkeyupSpy).not.toHaveBeenCalled();
+    });
+
+    it('readonly', () => {
+      const onkeydownSpy = jasmine.createSpy('onkeydownSpy', (event: MouseEvent) => {
+        expect(event instanceof MouseEvent).toBe(true);
+        expect(event.type).toBe('keydown');
+        expect(event.currentTarget).toBe(containerElement);
+        expect((event.target as HTMLInputElement).value).toBe('');
+        expect(event.target).toBe(inputElement);
+        expect(event.cancelable).toBe(true);
+      }).and.callThrough();
+
+      const onkeypressSpy = jasmine.createSpy('onkeypressSpy', (event: MouseEvent) => {
+        expect(event instanceof MouseEvent).toBe(true);
+        expect(event.type).toBe('keypress');
+        expect(event.currentTarget).toBe(containerElement);
+        expect((event.target as HTMLInputElement).value).toBe('');
+        expect(event.target).toBe(inputElement);
+        expect(event.cancelable).toBe(true);
+      }).and.callThrough();
+
+      const oninputSpy = jasmine.createSpy('oninputSpy', (event: MouseEvent) => {});
+
+      const onkeyupSpy = jasmine.createSpy('onkeyupSpy', (event: MouseEvent) => {
+        expect(event instanceof MouseEvent).toBe(true);
+        expect(event.type).toBe('keyup');
+        expect(event.currentTarget).toBe(containerElement);
+        expect((event.target as HTMLInputElement).value).toBe('');
+        expect(event.target).toBe(inputElement);
+        expect(event.cancelable).toBe(false);
+      }).and.callThrough();
+
+      const inputElement = <input type="text" readOnly={true}/>;
+
+      const containerElement = <div
+        onkeydown={onkeydownSpy}
+        onkeypress={onkeypressSpy}
+        oninput={oninputSpy}
+        onkeyup={onkeyupSpy}
+      >{inputElement}</div>;
+
+      type({
+        target: inputElement,
+        value: 'f',
+      });
+
+      expect(onkeydownSpy).toHaveBeenCalledBefore(onkeypressSpy);
+      expect(onkeypressSpy).toHaveBeenCalledBefore(onkeyupSpy);
+
+      expect(oninputSpy).not.toHaveBeenCalled();
     });
   });
 });

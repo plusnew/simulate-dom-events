@@ -18,7 +18,7 @@ function addChar(target: HTMLInputElement, character: string) {
 
     defaultPrevented = keyPressEvent.defaultPrevented;
 
-    if (defaultPrevented === false) {
+    if (defaultPrevented === false && target.readOnly === false) {
       target.value += character;
 
       const inputEvent = createKeyboardEvent('input', { cancelable: false });
