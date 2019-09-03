@@ -45,7 +45,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^4.0.0-rc.6",
     "mini-css-extract-plugin": "^0.8.0",
-    "sass-loader": "^7.1.0",
+    "sass-loader": "^8.0.0",
     "tslint": "^5.16.0",
     "tslint-config-airbnb": "^5.11.1",
     "typescript": "^3.4.5",
